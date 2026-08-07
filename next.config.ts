@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 
-const isProd = process.env.NODE_ENV === "production";
-const basePath = isProd ? "/babypleates" : "";
+const basePath =
+  process.env.NEXT_PUBLIC_BASE_PATH ??
+  (process.env.NODE_ENV === "production" ? "/babypleates" : "");
 
 const nextConfig = {
   output: "export",
@@ -13,7 +14,7 @@ const nextConfig = {
   trailingSlash: true,
 
   basePath,
-  assetPrefix: isProd ? "/babypleates/" : "",
+  assetPrefix: basePath ? `${basePath}/` : undefined,
 
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,

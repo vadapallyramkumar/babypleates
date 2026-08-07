@@ -21,9 +21,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Do NOT set static_site_generator: next — it only supports
+      # next.config.js/cjs/mjs and would create a conflicting next.config.js
+      # that drops NEXT_PUBLIC_BASE_PATH (breaking images/videos).
       - uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
 
       - uses: actions/setup-node@v4
         with:
@@ -33,6 +34,8 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /babypleates
 
       - uses: actions/upload-pages-artifact@v3
         with:
