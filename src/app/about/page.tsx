@@ -16,14 +16,16 @@ export default function AboutPage() {
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="relative aspect-[4/5] overflow-hidden bg-[#F5E6EC]">
-            <Image
-              src="/hero.png"
-              alt="About Baby Pleats"
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
+          <video
+            src="/insta1.mp4"
+            aria-label="About Baby Pleats"
+            autoPlay={true}
+            muted={true}
+            loop={true}
+            playsInline={true}
+            preload="metadata"
+            className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
           </div>
 
           <div>
