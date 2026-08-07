@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Container from "@/components/layout/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 import { instagramPosts } from "@/data/instagram";
+import { assetPath } from "@/lib/paths";
 import { siteConfig } from "@/lib/site";
 
 function InstagramVideo({
@@ -74,7 +75,7 @@ export default function InstagramFeed() {
                 rel="noopener noreferrer"
                 className="group relative block aspect-[9/16] overflow-hidden bg-[#F5E6EC] sm:aspect-square"
               >
-                <InstagramVideo src={post.video} alt={post.alt} />
+                <InstagramVideo src={assetPath(post.video)} alt={post.alt} />
                 <span className="pointer-events-none absolute inset-0 bg-black/0 transition group-hover:bg-black/15" />
                 <span className="pointer-events-none absolute bottom-2 right-2 rounded-full bg-black/45 px-2 py-1 text-[10px] font-medium tracking-wide text-white uppercase">
                   Reel

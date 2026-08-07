@@ -11,6 +11,7 @@ import {
   getProductsByCategory,
   products,
 } from "@/data/products";
+import { assetPath } from "@/lib/paths";
 
 export default function ShopCatalog() {
   const searchParams = useSearchParams();
@@ -102,7 +103,7 @@ export default function ShopCatalog() {
           <div className="grid md:grid-cols-2">
             <div className="relative min-h-[240px] md:min-h-[320px]">
               <Image
-                src="/hero.png"
+                src={assetPath("/hero.png")}
                 alt="Baby Pleats collection"
                 fill
                 className="object-cover"

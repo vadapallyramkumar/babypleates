@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Container from "@/components/layout/Container";
 import ProductCard from "@/components/product/ProductCard";
+import { assetPath } from "@/lib/paths";
 import {
   formatPrice,
   getProduct,
@@ -66,7 +67,7 @@ export default async function ProductPage({ params }: PageProps) {
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="relative aspect-[3/4] overflow-hidden bg-[#F5E6EC]">
             <Image
-              src={product.image}
+              src={assetPath(product.image)}
               alt={product.name}
               fill
               priority

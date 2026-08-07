@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { assetPath } from "@/lib/paths";
 import { siteConfig } from "@/lib/site";
 
 export default function Hero() {
@@ -20,7 +21,7 @@ export default function Hero() {
         >
           {/* Full banner visible on all screens — no tall crop that cuts the sides */}
           <Image
-            src="/hero1.png"
+            src={assetPath("/hero1.png")}
             alt="Baby Pleats — Traditional elegance for little ones. Handcrafted with love for every special moment."
             width={1920}
             height={900}

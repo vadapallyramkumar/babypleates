@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { formatPrice, type Product } from "@/data/products";
+import { assetPath } from "@/lib/paths";
 import { whatsappUrl } from "@/lib/site";
 
 type ProductCardProps = {
@@ -22,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-[#F5E6EC]">
           <Image
-            src={product.image}
+            src={assetPath(product.image)}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/layout/Container";
+import { assetPath } from "@/lib/paths";
 import { siteConfig, whatsappUrl } from "@/lib/site";
 import { categories } from "@/data/categories";
 
@@ -29,7 +30,7 @@ export default function Footer() {
           <div className="space-y-4">
             <Link href="/" className="inline-flex items-center gap-3">
               <Image
-                src="/Logo.jpg"
+                src={assetPath("/Logo.jpg")}
                 alt={siteConfig.name}
                 width={56}
                 height={56}

@@ -6,6 +6,7 @@ import AnnouncementBar from "./AnnouncementBar";
 import Container from "./Container";
 import Navbar from "./Navbar";
 import MobileMenu from "./MobileMenu";
+import { assetPath } from "@/lib/paths";
 import { siteConfig, whatsappUrl } from "@/lib/site";
 
 export default function Header() {
@@ -22,7 +23,7 @@ export default function Header() {
 
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/Logo.jpg"
+                src={assetPath("/Logo.jpg")}
                 alt={siteConfig.name}
                 width={64}
                 height={64}

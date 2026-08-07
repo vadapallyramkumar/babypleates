@@ -12,6 +12,7 @@ import {
 import Container from "@/components/layout/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 import { categories } from "@/data/categories";
+import { assetPath } from "@/lib/paths";
 
 export default function Collections() {
   return (
@@ -38,7 +39,7 @@ export default function Collections() {
                 >
                   <div className="relative aspect-[3/4] overflow-hidden bg-[#F5E6EC]">
                     <Image
-                      src={category.image}
+                      src={assetPath(category.image)}
                       alt={category.name}
                       fill
                       sizes="(max-width: 768px) 70vw, 20vw"

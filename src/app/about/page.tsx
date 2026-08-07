@@ -1,7 +1,7 @@
-import Image from "next/image";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
+import { assetPath } from "@/lib/paths";
 import { siteConfig, whatsappUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function AboutPage() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="relative aspect-[4/5] overflow-hidden bg-[#F5E6EC]">
           <video
-            src="/insta1.mp4"
+            src={assetPath("/Insta1.mp4")}
             aria-label="About Baby Pleats"
             autoPlay={true}
             muted={true}
