@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { formatPrice, type Product } from "@/data/products";
+import { formatPrice, getFromPrice, type Product } from "@/data/products";
 import { assetPath } from "@/lib/paths";
 import { whatsappUrl } from "@/lib/site";
 
@@ -35,7 +35,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.name}
           </h3>
           <p className="text-sm font-medium text-[#A02C68]">
-            From {formatPrice(product.price)}
+            From {formatPrice(getFromPrice(product))}
           </p>
         </div>
       </Link>

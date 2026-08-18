@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Backend API contract (design only)
+
+External backend schemas and endpoints are documented under [`docs/`](docs/README.md). The storefront still uses local `src/data/*` — do not integrate the API until Phase C.
+
 ## Getting Started
 
 First, run the development server:
