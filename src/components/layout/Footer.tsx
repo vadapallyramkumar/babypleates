@@ -3,15 +3,7 @@ import Image from "next/image";
 import Container from "@/components/layout/Container";
 import { assetPath } from "@/lib/paths";
 import { siteConfig, whatsappUrl } from "@/lib/site";
-import { categories } from "@/data/categories";
-
-const shopLinks = [
-  { name: "All Products", href: "/shop" },
-  ...categories.map((c) => ({
-    name: c.name,
-    href: `/shop?category=${c.slug}`,
-  })),
-];
+import { listCategories } from "@/lib/api/catalog";
 
 const helpLinks = [
   { name: "Size Chart", href: "/size-chart" },
@@ -22,7 +14,16 @@ const helpLinks = [
   { name: "Privacy Policy", href: "/privacy-policy" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const categories = await listCategories();
+  const shopLinks = [
+    { name: "All Products", href: "/shop" },
+    ...categories.map((c) => ({
+      name: c.name,
+      href: `/shop?category=${c.slug}`,
+    })),
+  ];
+
   return (
     <footer className="mt-auto border-t border-[#E8D0DA] bg-[#FBF0F4]">
       <Container className="py-14">

@@ -8,7 +8,7 @@ import {
   getUniqueSizes,
   getVariant,
   type Product,
-} from "@/data/products";
+} from "@/lib/product-utils";
 import { whatsappUrl } from "@/lib/site";
 
 type ProductPurchaseProps = {
@@ -63,7 +63,9 @@ export default function ProductPurchase({
             )}
           </p>
         ) : (
-          <p className="text-sm text-gray-500">This combination is not available.</p>
+          <p className="text-sm text-gray-500">
+            This combination is not available.
+          </p>
         )}
         {variant && !inStock ? (
           <p className="mt-1 text-sm font-medium text-gray-600">Out of stock</p>

@@ -5,25 +5,26 @@ import Container from "@/components/layout/Container";
 import ProductCard from "@/components/product/ProductCard";
 import ProductDetail from "@/components/product/ProductDetail";
 import {
+  getCategory,
   getProduct,
   getRelatedProducts,
-  products,
-} from "@/data/products";
-import { getCategory } from "@/data/categories";
+  listProducts,
+} from "@/lib/api/catalog";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  const { data } = await listProducts({ limit: 100 });
+  return data.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return { title: "Product" };
   return {
     title: product.name,
@@ -33,11 +34,11 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
 
-  const category = getCategory(product.category);
-  const related = getRelatedProducts(slug, 4);
+  const category = await getCategory(product.category);
+  const related = await getRelatedProducts(slug, 4);
 
   return (
     <main className="pb-20 pt-10 md:pt-14">

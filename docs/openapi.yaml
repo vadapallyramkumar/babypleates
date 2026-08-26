@@ -3,8 +3,10 @@ info:
   title: Baby Pleats API
   version: 1.1.0
   description: |
-    External backend contract for Baby Pleats catalog, orders, and admin (v1.1).
-    Price and stock live on size/color variants. Full storefront API wiring remains Phase C.
+    External backend contract for Baby Pleats (separate API repo, v1.1).
+    Price and stock live on size/color variants.
+    Storefront consumes public catalog via NEXT_PUBLIC_API_BASE_URL.
+    Current deployment: GET /categories, GET /products, GET /products/{slug}, plus GET /health.
 servers:
   - url: https://api.babypleats.com/v1
     description: Production (example)
@@ -642,6 +644,10 @@ components:
           type: integer
         isActive:
           type: boolean
+        filter:
+          type: string
+          nullable: true
+          enum: [budgetFriendly, readyToDispatch, bestseller]
 
     CategoryWrite:
       allOf:
@@ -662,6 +668,10 @@ components:
           type: integer
         isActive:
           type: boolean
+        filter:
+          type: string
+          nullable: true
+          enum: [budgetFriendly, readyToDispatch, bestseller]
 
     CategoryResponse:
       type: object

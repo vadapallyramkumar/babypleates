@@ -2,30 +2,42 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/product/ProductCard";
 import SectionHeading from "@/components/common/SectionHeading";
-import { categories } from "@/data/categories";
-import {
-  getNewArrivals,
-  getProductsByCategory,
-  products,
-} from "@/data/products";
+import { productMatchesCategory } from "@/lib/api/catalog";
+import type { Category, Product } from "@/lib/api/types";
 import { assetPath } from "@/lib/paths";
 
-export default function ShopCatalog() {
+type ShopCatalogProps = {
+  categories: Category[];
+  products: Product[];
+};
+
+export default function ShopCatalog({
+  categories,
+  products,
+}: ShopCatalogProps) {
   const searchParams = useSearchParams();
-  const category = searchParams.get("category") ?? undefined;
+  const categorySlug = searchParams.get("category") ?? undefined;
   const sort = searchParams.get("sort") ?? undefined;
 
-  let items =
-    sort === "new" ? getNewArrivals(20) : getProductsByCategory(category);
+  const activeCategory = categories.find((c) => c.slug === categorySlug);
 
-  if (sort === "new" && category) {
-    items = items.filter((p) => p.category === category);
-  }
+  const items = useMemo(() => {
+    let list = products;
+    if (sort === "new") {
+      list = list.filter((p) => p.newArrival);
+    }
+    if (activeCategory) {
+      list = list.filter((p) => productMatchesCategory(p, activeCategory));
+    } else if (categorySlug) {
+      list = list.filter((p) => p.category === categorySlug);
+    }
+    return list;
+  }, [products, sort, activeCategory, categorySlug]);
 
-  const activeCategory = categories.find((c) => c.slug === category);
   const title =
     sort === "new"
       ? "New Arrivals"
@@ -48,7 +60,7 @@ export default function ShopCatalog() {
         <Link
           href="/shop"
           className={`px-4 py-2 text-sm font-medium transition ${
-            !category && sort !== "new"
+            !categorySlug && sort !== "new"
               ? "bg-[#A02C68] text-white"
               : "bg-white text-gray-700 ring-1 ring-[#E8D0DA] hover:text-[#A02C68]"
           }`}
@@ -70,7 +82,7 @@ export default function ShopCatalog() {
             key={c.slug}
             href={`/shop?category=${c.slug}`}
             className={`px-4 py-2 text-sm font-medium transition ${
-              category === c.slug
+              categorySlug === c.slug
                 ? "bg-[#A02C68] text-white"
                 : "bg-white text-gray-700 ring-1 ring-[#E8D0DA] hover:text-[#A02C68]"
             }`}
@@ -98,7 +110,7 @@ export default function ShopCatalog() {
         </div>
       )}
 
-      {!category && sort !== "new" && products.length > 0 ? (
+      {!categorySlug && sort !== "new" && products.length > 0 ? (
         <div className="mt-16 overflow-hidden bg-[#F5E6EC]">
           <div className="grid md:grid-cols-2">
             <div className="relative min-h-[240px] md:min-h-[320px]">

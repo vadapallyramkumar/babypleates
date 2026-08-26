@@ -1,10 +1,11 @@
 # Baby Pleats — Catalog & Backend API Contract (v1.1)
 
-**Status:** Design frozen (v1.1 — size/color variants). External backend contract.  
-**Storefront:** Local catalog on the product page now uses variants; full API wiring remains Phase C.  
+**Status:** Design frozen (v1.1 — size/color variants). External backend contract (API is a **separate repo**).  
+**Implemented now:** public `GET /categories`, `GET /products`, `GET /products/:slug` (plus `GET /health`). Admin, auth, media, orders, and site settings are deferred.  
+**Storefront:** Fetches catalog via `NEXT_PUBLIC_API_BASE_URL`; WhatsApp remains the order CTA.  
 **Base URL (example):** `https://api.babypleats.com/v1`
 
-This document is the source of truth for Product, Category, Order, Site, and Admin API shapes. An OpenAPI 3 description lives alongside it at [`openapi.yaml`](./openapi.yaml).
+This document is the source of truth for Product, Category, Order, Site, and Admin API shapes. An OpenAPI 3 description lives alongside it at [`openapi.yaml`](./openapi.yaml). The deployed API currently exposes the public catalog section only.
 
 ---
 
@@ -36,6 +37,7 @@ This document is the source of truth for Product, Category, Order, Site, and Adm
 | `description` | string | yes | Shop subtitle / SEO |
 | `sortOrder` | number | yes | Ascending; admin-controlled |
 | `isActive` | boolean | yes | Inactive hidden from public GETs |
+| `filter` | string \| null | no | Merchandising: `budgetFriendly` \| `readyToDispatch` \| `bestseller`. When set, `GET /products?category=<slug>` applies that rule instead of `categoryId`. |
 
 ```json
 {
@@ -654,7 +656,7 @@ A machine-readable copy of the seed lives at [`catalog.seed.json`](./catalog.see
 | **C — Storefront integration** | Replace `src/data/*` with API client; keep WhatsApp CTA | Yes |
 | **D — Orders automation** | Website `POST /orders`; optional WhatsApp webhooks | Optional |
 
-**Hosting note:** The live site is a static GitHub Pages export today. Phase C needs either client-side fetches to the external API (CORS + public GETs) or moving off static-only hosting.
+**Hosting note:** The live site is a static GitHub Pages export. Catalog is loaded at build/runtime from the external API (`NEXT_PUBLIC_API_BASE_URL`), with `src/data/catalog.fallback.json` when the API is unreachable.
 
 **v1 non-goals:** payment gateway, customer accounts, Next.js Route Handlers on GitHub Pages.
 

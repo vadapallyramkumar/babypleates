@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { formatPrice, getFromPrice, type Product } from "@/data/products";
+import { formatPrice, getFromPrice, type Product } from "@/lib/product-utils";
 import { assetPath } from "@/lib/paths";
 import { whatsappUrl } from "@/lib/site";
 

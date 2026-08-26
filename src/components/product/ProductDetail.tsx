@@ -9,7 +9,7 @@ import {
   getUniqueSizes,
   getVariant,
   type Product,
-} from "@/data/products";
+} from "@/lib/product-utils";
 
 type ProductDetailProps = {
   product: Product;

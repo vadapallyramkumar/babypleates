@@ -2,10 +2,10 @@ import Link from "next/link";
 import Container from "@/components/layout/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 import ProductCard from "@/components/product/ProductCard";
-import { getBestsellers } from "@/data/products";
+import { getBestsellers } from "@/lib/api/catalog";
 
-export default function BestSellers() {
-  const items = getBestsellers(8);
+export default async function BestSellers() {
+  const items = await getBestsellers(8);
 
   return (
     <section className="border-t border-[#E8D0DA]/60 bg-white py-16 md:py-20">
@@ -23,7 +23,7 @@ export default function BestSellers() {
 
         <div className="mt-12 flex justify-center">
           <Link
-            href="/shop"
+            href="/shop?category=best-sellers"
             className="inline-flex bg-[#A02C68] px-8 py-3 text-sm font-semibold text-white transition hover:bg-[#8B235A]"
           >
             View All Best Sellers
