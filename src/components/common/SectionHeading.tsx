@@ -13,7 +13,7 @@ export default function SectionHeading({
   title,
   subtitle,
   className,
-  align = "center",
+  align = "center", 
   action,
 }: SectionHeadingProps) {
   return (
