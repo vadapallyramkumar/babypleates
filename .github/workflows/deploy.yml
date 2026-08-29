@@ -40,6 +40,7 @@ jobs:
       - run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /babypleates
+          NEXT_PUBLIC_API_BASE_URL: https://babypleats-api.onrender.com/v1
 
       - uses: actions/upload-pages-artifact@v3
         with:
