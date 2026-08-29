@@ -51,16 +51,16 @@ export default function CategoryCard({
       </div>
 
       <div className="flex flex-1 flex-col items-center px-3 pb-5 pt-4 text-center md:px-4 md:pb-6 md:pt-5">
-        <h3 className="font-[family-name:var(--font-display)] text-base font-semibold leading-snug text-[#7A1B30] md:text-lg">
+        <h1 className="font-[family-name:var(--font-display)] text-base font-bold leading-snug text-[#7A1B30] md:text-lg">
           {label}
-        </h3>
+        </h1>
 
         <div className="mt-3 flex w-full items-center gap-2 md:mt-4">
           <span
             aria-hidden
             className="h-px flex-1 bg-gradient-to-r from-transparent to-[#C4A35A]/80"
           />
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7A1B30] md:text-[11px]">
+          <span className="text-[8px] font-semibold uppercase tracking-[0.14em] text-[#7A1B30] md:text-[10px]">
             Explore Collection →
           </span>
           <span
