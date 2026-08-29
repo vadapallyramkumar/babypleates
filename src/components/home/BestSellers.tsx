@@ -8,14 +8,14 @@ export default async function BestSellers() {
   const items = await getBestsellers(8);
 
   return (
-    <section className="border-t border-[#E8D0DA]/60 bg-white py-16 md:py-20">
+    <section className="border-t border-[#E8D0DA]/60 bg-[#FFF8F5] py-16 md:py-20">
       <Container>
         <SectionHeading
           title="Best Sellers"
           subtitle="Our most-loved outfits — the ones families come back for."
         />
 
-        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6">
+        <div className="grid grid-cols-2 gap-x-3 gap-y-5 sm:gap-x-4 sm:gap-y-6 md:grid-cols-3 md:gap-x-5 lg:grid-cols-4">
           {items.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
