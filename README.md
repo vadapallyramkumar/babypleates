@@ -2,9 +2,15 @@ This is a [Next.js](https://nextjs.org) Baby Pleats storefront.
 
 ## Catalog
 
-Products and categories come from local JSON: [`src/data/catalog.fallback.json`](src/data/catalog.fallback.json).
+Products and categories are fetched from the external API (`NEXT_PUBLIC_API_BASE_URL`). If the API is unreachable, the storefront falls back to [`src/data/catalog.fallback.json`](src/data/catalog.fallback.json).
 
-An external catalog API is planned later; contract/seed docs live in [`docs/`](docs/README.md).
+API contract and seed docs: [`docs/`](docs/README.md).
+
+For local dev, create `.env.local`:
+
+```
+NEXT_PUBLIC_API_BASE_URL=https://babypleats-api.onrender.com
+```
 
 ## Getting Started
 

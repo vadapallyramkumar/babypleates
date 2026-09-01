@@ -10,18 +10,15 @@ import CategoryCard, {
   CATEGORY_BADGE_BY_SLUG,
 } from "@/components/shop/CategoryCard";
 import { productMatchesCategory } from "@/lib/api/catalog";
-import type { Category, Product } from "@/lib/api/types";
+import { useCategories, useProducts } from "@/hooks/use-catalog";
 import { assetPath } from "@/lib/paths";
 
-type ShopCatalogProps = {
-  categories: Category[];
-  products: Product[];
-};
-
-export default function ShopCatalog({
-  categories,
-  products,
-}: ShopCatalogProps) {
+export default function ShopCatalog() {
+  const { data: categories, loading: categoriesLoading } = useCategories();
+  const { data: products, loading: productsLoading } = useProducts({
+    limit: 100,
+  });
+  const loading = categoriesLoading || productsLoading;
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get("category") ?? undefined;
   const sort = searchParams.get("sort") ?? undefined;
@@ -51,6 +48,12 @@ export default function ShopCatalog({
       : activeCategory
         ? activeCategory.name
         : "All Categories";
+
+  if (loading) {
+    return (
+      <p className="py-20 text-center text-gray-600">Loading shop…</p>
+    );
+  }
 
   return (
     <>

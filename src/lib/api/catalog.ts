@@ -2,7 +2,29 @@ import fallback from "@/data/catalog.fallback.json";
 import { mapCategory, mapProduct } from "./map";
 import type { ApiCategory, ApiProduct, ApiVariant, Category, Product } from "./types";
 
+function resolveApiBase(): string {
+  const raw = (
+    process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://babypleats-api.onrender.com"
+  ).replace(/\/$/, "");
+  return raw.endsWith("/v1") ? raw : `${raw}/v1`;
+}
+
+const API_BASE = resolveApiBase();
+
 type ListMeta = { page: number; limit: number; total: number };
+
+async function apiGet<T>(path: string): Promise<T | null> {
+  try {
+    const isServer = typeof window === "undefined";
+    const res = await fetch(`${API_BASE}${path}`, {
+      ...(isServer ? { next: { revalidate: 60 } } : { cache: "no-store" }),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
 
 function enrichSeedProduct(raw: Record<string, unknown>): ApiProduct {
   const variants = (raw.variants as ApiVariant[]) ?? [];
@@ -33,22 +55,25 @@ function enrichSeedProduct(raw: Record<string, unknown>): ApiProduct {
   };
 }
 
-function allCategories(): Category[] {
+function fallbackCategories(): Category[] {
   return (fallback.categories as ApiCategory[]).map(mapCategory);
 }
 
-function allProducts(): Product[] {
+function fallbackProducts(): Product[] {
   return (fallback.products as Record<string, unknown>[]).map((p) =>
     mapProduct(enrichSeedProduct(p))
   );
 }
 
 export async function listCategories(): Promise<Category[]> {
-  return allCategories();
+  const json = await apiGet<{ data: ApiCategory[] }>("/categories");
+  if (json?.data?.length) return json.data.map(mapCategory);
+  return fallbackCategories();
 }
 
 export async function getCategory(slug: string): Promise<Category | undefined> {
-  return allCategories().find((c) => c.slug === slug);
+  const cats = await listCategories();
+  return cats.find((c) => c.slug === slug);
 }
 
 export async function listProducts(params?: {
@@ -60,12 +85,28 @@ export async function listProducts(params?: {
   page?: number;
   limit?: number;
 }): Promise<{ data: Product[]; meta: ListMeta }> {
-  let data = allProducts();
+  const sp = new URLSearchParams();
+  if (params?.category) sp.set("category", params.category);
+  if (params?.featured != null) sp.set("featured", String(params.featured));
+  if (params?.isNew != null) sp.set("isNew", String(params.isNew));
+  if (params?.tag) sp.set("tag", params.tag);
+  if (params?.q) sp.set("q", params.q);
+  if (params?.page) sp.set("page", String(params.page));
+  sp.set("limit", String(params?.limit ?? 100));
+
+  const json = await apiGet<{ data: ApiProduct[]; meta: ListMeta }>(
+    `/products?${sp.toString()}`
+  );
+  if (json?.data) {
+    return { data: json.data.map(mapProduct), meta: json.meta };
+  }
+
+  let data = fallbackProducts();
   if (params?.featured) data = data.filter((p) => p.bestseller);
   if (params?.isNew) data = data.filter((p) => p.newArrival);
   if (params?.category) {
     data = data.filter((p) =>
-      productMatchesCategorySync(p, params.category!, allCategories())
+      productMatchesCategorySync(p, params.category!, fallbackCategories())
     );
   }
   if (params?.limit != null) data = data.slice(0, params.limit);
@@ -76,7 +117,11 @@ export async function listProducts(params?: {
 }
 
 export async function getProduct(slug: string): Promise<Product | null> {
-  return allProducts().find((p) => p.slug === slug) ?? null;
+  const json = await apiGet<{ data: ApiProduct }>(
+    `/products/${encodeURIComponent(slug)}`
+  );
+  if (json?.data) return mapProduct(json.data);
+  return fallbackProducts().find((p) => p.slug === slug) ?? null;
 }
 
 export async function getBestsellers(limit = 8): Promise<Product[]> {
@@ -133,3 +178,5 @@ export function productMatchesCategory(product: Product, category: Category) {
   if (category.filter === "bestseller") return Boolean(product.bestseller);
   return product.category === category.slug;
 }
+
+export { API_BASE };

@@ -1,9 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/layout/Container";
 import { assetPath } from "@/lib/paths";
 import { siteConfig, whatsappUrl } from "@/lib/site";
-import { listCategories } from "@/lib/api/catalog";
+import { useCategories } from "@/hooks/use-catalog";
 
 const helpLinks = [
   { name: "Size Chart", href: "/size-chart" },
@@ -14,8 +16,8 @@ const helpLinks = [
   { name: "Privacy Policy", href: "/privacy-policy" },
 ];
 
-export default async function Footer() {
-  const categories = await listCategories();
+export default function Footer() {
+  const { data: categories } = useCategories();
   const shopLinks = [
     { name: "All Products", href: "/shop" },
     ...categories.map((c) => ({

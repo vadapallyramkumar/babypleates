@@ -13,13 +13,10 @@ import SectionHeading from "@/components/common/SectionHeading";
 import CategoryCard, {
   CATEGORY_BADGE_BY_SLUG,
 } from "@/components/shop/CategoryCard";
-import type { Category } from "@/lib/api/types";
+import { useCategories } from "@/hooks/use-catalog";
 
-type CollectionsProps = {
-  categories: Category[];
-};
-
-export default function Collections({ categories }: CollectionsProps) {
+export default function Collections() {
+  const { data: categories, loading } = useCategories();
   return (
     <section className="bg-[#FFF8F5] py-16 md:py-20">
       <Container>
@@ -28,6 +25,9 @@ export default function Collections({ categories }: CollectionsProps) {
           subtitle="Explore handcrafted ethnic styles for every little celebration."
         />
 
+        {loading ? (
+          <p className="py-12 text-center text-gray-600">Loading collections…</p>
+        ) : (
         <Carousel opts={{ align: "start", loop: false }} className="w-full">
           <CarouselContent className="-ml-3 md:-ml-4">
             {categories.map((category) => (
@@ -48,6 +48,7 @@ export default function Collections({ categories }: CollectionsProps) {
           <CarouselPrevious className="left-0 hidden border-[#A02C68]/30 bg-white/90 md:flex" />
           <CarouselNext className="right-0 hidden border-[#A02C68]/30 bg-white/90 md:flex" />
         </Carousel>
+        )}
 
         <div className="mt-10 flex justify-center">
           <Link

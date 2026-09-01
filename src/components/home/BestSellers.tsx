@@ -1,11 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import SectionHeading from "@/components/common/SectionHeading";
 import ProductCard from "@/components/product/ProductCard";
-import { getBestsellers } from "@/lib/api/catalog";
+import { useBestsellers } from "@/hooks/use-catalog";
 
-export default async function BestSellers() {
-  const items = await getBestsellers(8);
+export default function BestSellers() {
+  const { data: items, loading } = useBestsellers(8);
 
   return (
     <section className="border-t border-[#E8D0DA]/60 bg-[#FFF8F5] py-16 md:py-20">
@@ -15,11 +17,15 @@ export default async function BestSellers() {
           subtitle="Our most-loved outfits — the ones families come back for."
         />
 
-        <div className="grid grid-cols-2 gap-x-3 gap-y-5 sm:gap-x-4 sm:gap-y-6 md:grid-cols-3 md:gap-x-5 lg:grid-cols-4">
-          {items.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <p className="py-12 text-center text-gray-600">Loading best sellers…</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-x-3 gap-y-5 sm:gap-x-4 sm:gap-y-6 md:grid-cols-3 md:gap-x-5 lg:grid-cols-4">
+            {items.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
 
         <div className="mt-12 flex justify-center">
           <Link
